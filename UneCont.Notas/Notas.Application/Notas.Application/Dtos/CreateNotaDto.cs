@@ -4,6 +4,8 @@ namespace Notas.Application.Dtos
 {
     public class CreateNotaDto
     {
+        public Guid Id { get; set; }
+
         [Required]
         public int Numero { get; set; }
 
@@ -16,5 +18,6 @@ namespace Notas.Application.Dtos
 
         [Required]
         public DateTime DataEmissao { get; set; }
+        public DateTime DataCadastro { get; set; }
     }
 }

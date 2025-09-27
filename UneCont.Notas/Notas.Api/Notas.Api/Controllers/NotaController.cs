@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Notas.Application.Dtos;
 using Notas.Application.Interfaces;
+using Notas.Domain.Entities;
+using System.Security.AccessControl;
+using System.Threading.Tasks;
 
 namespace UneCont.Notas.Api.Controllers
 {
@@ -29,6 +32,27 @@ namespace UneCont.Notas.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpPut()]
+        [Route("v1/Atualizar")]
+        public async Task<IActionResult> Atualizar([FromBody] CreateNotaDto dto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            _notaService.Atualizar(dto);
+            return Ok(new { message = "Nota atualizada com sucesso!" });
+        }
+
+        [HttpDelete()]
+        [Route("v1/Deletar/{id}")]
+        public async Task<IActionResult> Deletar(Guid id)
+        {
+            var nota = await _notaService.ObterPorId(id);
+            if (nota == null) return NotFound();
+
+            _notaService.Deletar(id);
+            return Ok(new { message = "Nota excluída com sucesso!" });
         }
 
         [HttpGet]
